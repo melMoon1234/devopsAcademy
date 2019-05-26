@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                sh "echo $PWD"
+                sh "echo $USER"
+                echo '${WORKSPACE}'
+                sh "mkdir 'sourceCode${env.BUILD_NUMBER}'"
+                sh "git clone -b DEV https://github.com/melMoon1234/devopsAcademy.git '${WORKSPACE}/sourceCode${env.BUILD_NUMBER}'"
+                echo 'Building..'
+				sh "export PATH=$PATH:/usr/local/go/bin"
+				sh "cd '${WORKSPACE}/sourceCode${env.BUILD_NUMBER}/RestProject/v1'"
+				//sh "go build"				
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('Package') {
+            steps {
+                echo 'Packaging....'
+				sh "cd '${WORKSPACE}/sourceCode${env.BUILD_NUMBER}/RestProject/'"
+				sh "zip -r '${WORKSPACE}/sourceCode${env.BUILD_NUMBER}/RestProject/v1.zip' '${WORKSPACE}/sourceCode${env.BUILD_NUMBER}/RestProject/v1'"
+            }
+        }
+		stage('Deploy') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+    }
+}
