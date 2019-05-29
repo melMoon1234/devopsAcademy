@@ -1,0 +1,6 @@
+---
+- hosts: servers
+  become: true
+  tasks:
+     - name: "intall git"
+       apt: name=git state=present
